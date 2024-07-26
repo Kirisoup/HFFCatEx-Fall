@@ -1,4 +1,3 @@
-using System.Linq;
 using HumanAPI;
 using UnityEngine;
 
@@ -6,36 +5,42 @@ namespace fall {
 
     public static class Fall {
 
-        private static LevelVoid levelVoids;
+        private static LevelVoid levelVoid;
 
-        public static void InitLevel() {
-            levelVoids = new();
+        public static void PrepareLevel() {
+            levelVoid = new();
             InitVoidTrigs();
-            RemoveOriginalPassTrigs();
+            RemovePassTrigs();
             Plugin.Print("ready to fall!");
         }
 
         public static void InitVoidTrigs() {
-            levelVoids = new();
-            foreach (var obj in levelVoids.VoidObjts) {
-                foreach (var ftrig in obj.GetComponents<FallTrigger>()) {
-                    Object.Destroy(ftrig);
+            levelVoid = new();
+            foreach (var vobj in levelVoid.VoidObjts) {
+                foreach (var ftrig in levelVoid.FallTrigs) {
+                    ftrig.enabled = false;
                 }
-                obj.AddComponent<VoidTrigger>();
+                vobj.AddComponent<VoidTrigger>();
             }
         }
 
-        public static void RemoveOriginalPassTrigs() {
-            foreach (var trig in Object.FindObjectsOfType<LevelPassTrigger>()) {
-                if (!levelVoids.VoidTrigs.Contains(trig)) Object.Destroy(trig);
+        public static void RemovePassTrigs() {
+            foreach (var ptrig in levelVoid.PassTrigs) {
+                ptrig.enabled = false;
             }
         }
 
-        public static void RestoreVoidTrigs() {
-            foreach (var trig in levelVoids.VoidTrigs) {
-                trig.gameObject.AddComponent<FallTrigger>();
-                Object.Destroy(trig);
+        public static void RestoreLevel() {
+            foreach (var vtrig in levelVoid.VoidTrigs) {
+                foreach (var ftrig in levelVoid.FallTrigs) {
+                    ftrig.enabled = true;
+                }
+                Object.Destroy(vtrig);
             }
+            foreach (var ptrig in levelVoid.PassTrigs) {
+                ptrig.enabled = true;
+            }
+            Plugin.Print("Stopped falling.");
         }    
     }
 }

@@ -14,16 +14,16 @@ namespace fall {
 
         public void Awake() {
             harmony.PatchAll(typeof(Plugin));
-            Fall.InitLevel();
+            Fall.PrepareLevel();
         }
 
         [HarmonyPatch(typeof(Game), "OnSceneLoaded"), HarmonyPostfix]
         static void OnSceneLoaded() {
-            Fall.InitLevel();
+            Fall.PrepareLevel();
         }
 
         public void OnDestroy() {
-            Fall.RestoreVoidTrigs();
+            Fall.RestoreLevel();
             harmony.UnpatchSelf();
         }
     }

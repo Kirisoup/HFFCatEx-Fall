@@ -35,6 +35,21 @@ namespace fall {
             voidTrigs ??= VoidObjts
                 .Select(o => o.GetComponent<VoidTrigger>())
                 .ToArray();
+        
+        private LevelPassTrigger[] passTrigs;
+
+        public LevelPassTrigger[] PassTrigs =>
+            passTrigs ??= UnityEngine.Object.FindObjectsOfType<LevelPassTrigger>()
+                .Where(p => !VoidTrigs.Contains(p))
+                .ToArray();
+
+        private FallTrigger[] fallTrigs;
+
+        public FallTrigger[] FallTrigs => 
+            fallTrigs ??= VoidObjts
+                .Select(v => v.GetComponent<FallTrigger>())
+                .ToArray()
+        ;
     }
 
     public static class Vec3Extensions {
