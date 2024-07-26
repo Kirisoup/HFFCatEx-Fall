@@ -31,15 +31,16 @@ namespace fall {
         }
 
         public static void RestoreLevel() {
+            foreach (var ftrig in levelVoid.FallTrigs) {
+                ftrig.enabled = true;
+            }
             foreach (var vtrig in levelVoid.VoidTrigs) {
-                foreach (var ftrig in levelVoid.FallTrigs) {
-                    ftrig.enabled = true;
-                }
                 Object.Destroy(vtrig);
             }
             foreach (var ptrig in levelVoid.PassTrigs) {
                 ptrig.enabled = true;
             }
+            levelVoid = new();
             Plugin.Print("Stopped falling.");
         }
     }
