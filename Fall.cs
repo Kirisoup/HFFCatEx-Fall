@@ -41,6 +41,6 @@ namespace fall {
                 ptrig.enabled = true;
             }
             Plugin.Print("Stopped falling.");
-        }    
+        }
     }
 }

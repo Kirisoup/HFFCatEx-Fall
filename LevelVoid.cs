@@ -35,7 +35,7 @@ namespace fall {
             voidTrigs ??= VoidObjts
                 .Select(o => o.GetComponent<VoidTrigger>())
                 .ToArray();
-        
+
         private LevelPassTrigger[] passTrigs;
 
         public LevelPassTrigger[] PassTrigs =>
@@ -45,7 +45,7 @@ namespace fall {
 
         private FallTrigger[] fallTrigs;
 
-        public FallTrigger[] FallTrigs => 
+        public FallTrigger[] FallTrigs =>
             fallTrigs ??= VoidObjts
                 .Select(v => v.GetComponent<FallTrigger>())
                 .ToArray()
