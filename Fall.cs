@@ -1,6 +1,3 @@
-using HumanAPI;
-using UnityEngine;
-
 namespace fall {
 
     public static class Fall {
@@ -10,36 +7,24 @@ namespace fall {
         public static void PrepareLevel() {
             levelVoid = new();
             InitVoidTrigs();
-            RemovePassTrigs();
+            DisablePassTrigs();
             Plugin.Print("ready to fall!");
         }
 
         public static void InitVoidTrigs() {
             levelVoid = new();
-            foreach (var ftrig in levelVoid.FallTrigs) {
-                ftrig.enabled = false;
-            }
-            foreach (var vobj in levelVoid.VoidObjts) {
-                vobj.AddComponent<VoidTrigger>();
-            }
+            levelVoid.FallTrigs.Value.ForEach(LevelVoid.Disable);
+            levelVoid.VoidObjs.Value.ForEach(LevelVoid.Add);
         }
 
-        public static void RemovePassTrigs() {
-            foreach (var ptrig in levelVoid.PassTrigs) {
-                ptrig.enabled = false;
-            }
+        public static void DisablePassTrigs() {
+            levelVoid.PassTrigs.Value.ForEach(LevelVoid.Disable);
         }
 
         public static void RestoreLevel() {
-            foreach (var ftrig in levelVoid.FallTrigs) {
-                ftrig.enabled = true;
-            }
-            foreach (var vtrig in levelVoid.VoidTrigs) {
-                Object.Destroy(vtrig);
-            }
-            foreach (var ptrig in levelVoid.PassTrigs) {
-                ptrig.enabled = true;
-            }
+            levelVoid.VoidTrigs.Value.ForEach(LevelVoid.Destroy);
+            levelVoid.FallTrigs.Value.ForEach(LevelVoid.Enable);
+            levelVoid.PassTrigs.Value.ForEach(LevelVoid.Enable);
             levelVoid = new();
             Plugin.Print("Stopped falling.");
         }

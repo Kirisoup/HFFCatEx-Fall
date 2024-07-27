@@ -12,6 +12,7 @@ namespace fall {
             if (!componentInParent) return;
             Dependencies.Get<IGame>().EnterPassZone();
             Dependencies.Get<IGame>().Fall(componentInParent, false, fallAchievement);
+            OnFall.Invoke();
         }
 
         public bool fallAchievement = true;
