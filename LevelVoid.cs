@@ -23,12 +23,10 @@ namespace fall {
                 .Distinct()
                 .Where(c => c.GetComponent<FallTrigger>())
                 .AnyOr(GetCPsCoords()
-                    .SelectMany(v => Physics.RaycastAll(v.ToBottom(), Vector3.up)
-                        .Select(h => h.collider)
-                        .Distinct()
-                        .Where(c => c.GetComponent<FallTrigger>())
-                    )
-                    .Distinct())
+                    .SelectMany(v => Physics.RaycastAll(v.ToBottom(), Vector3.up))
+                    .Select(h => h.collider)
+                    .Distinct()
+                    .Where(c => c.GetComponent<FallTrigger>()))
                 .Select(c => c.gameObject)
                 .ToArray();
 
