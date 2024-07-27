@@ -16,10 +16,10 @@ namespace fall {
 
         public static void InitVoidTrigs() {
             levelVoid = new();
+            foreach (var ftrig in levelVoid.FallTrigs) {
+                ftrig.enabled = false;
+            }
             foreach (var vobj in levelVoid.VoidObjts) {
-                foreach (var ftrig in levelVoid.FallTrigs) {
-                    ftrig.enabled = false;
-                }
                 vobj.AddComponent<VoidTrigger>();
             }
         }
