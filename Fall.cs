@@ -12,7 +12,6 @@ namespace fall {
         }
 
         public static void InitVoidTrigs() {
-            levelVoid = new();
             levelVoid.FallTrigs.Value.ForEach(LevelVoid.Disable);
             levelVoid.VoidObjs.Value.ForEach(LevelVoid.Add);
         }

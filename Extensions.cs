@@ -2,23 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace fall {
-    public static class Extensions {
-        public static void ForEach<T>(this T[] array, Action<T> action) {
-            if (array == null)
-                throw new ArgumentNullException(nameof(array));
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-            foreach (var item in array) {
-                action(item);
-            }
+public static class Extensions {
+    public static void ForEach<T>(this T[] array, Action<T> action) {
+        foreach (var item in array ?? throw new ArgumentNullException(nameof(array))) {
+            (action ?? throw new ArgumentNullException(nameof(action)))(item);
         }
-
-        public static IEnumerable<T> AnyOr<T>(this IEnumerable<T> self, IEnumerable<T> other) =>
-            self.Any() ? self : other;
-
-        public static UnityEngine.Vector3 ToBottom(this UnityEngine.Vector3 v) =>
-            new(v.x, LevelVoid.bottomY, v.z);
     }
 
+    public static IEnumerable<T> AnyOr<T>(this IEnumerable<T> self, IEnumerable<T> other) =>
+        (self ?? throw new ArgumentNullException(nameof(self)))
+            .Any() ? self 
+                : (other ?? throw new ArgumentNullException(nameof(other)));
 }

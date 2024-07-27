@@ -19,16 +19,15 @@ namespace fall {
 
         private GameObject[] FindVoidObjs() =>
             GetCPsCoords()
-                .Select(v => Raycast(v.ToBottom(), Vector3.up).collider)
+                .Select(v => Physics.Raycast(v.ToBottom(), Vector3.up, out RaycastHit hit) ? hit.collider : null)
+                .Where(v => v is not null)
                 .Distinct()
                 .Where(c => c.GetComponent<FallTrigger>())
                 .AnyOr(GetCPsCoords()
-                    .SelectMany(v => Physics.RaycastAll(v.ToBottom(), Vector3.up)
-                        .Select(h => h.collider)
-                        .Distinct()
-                        .Where(c => c.GetComponent<FallTrigger>())
-                    )
-                    .Distinct())
+                    .SelectMany(v => Physics.RaycastAll(v.ToBottom(), Vector3.up))
+                    .Select(h => h.collider)
+                    .Distinct()
+                    .Where(c => c.GetComponent<FallTrigger>()))
                 .Select(c => c.gameObject)
                 .ToArray();
 
@@ -53,9 +52,11 @@ namespace fall {
                 .Select(cp => cp.position)
                 .ToArray() ?? Array.Empty<Vector3>();
 
-        private static RaycastHit Raycast(Vector3 origin, Vector3 direction) =>
-            Physics.Raycast(origin, direction, out RaycastHit hit) ? hit : new();
-
         public static readonly float bottomY = -10000;
+    }
+
+    public static class Vec3Extension {
+        public static Vector3 ToBottom(this Vector3 v) =>
+            new(v.x, LevelVoid.bottomY, v.z);
     }
 }

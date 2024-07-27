@@ -7,23 +7,34 @@ namespace fall {
     [BepInProcess("Human.exe")]
     public class Plugin : BaseUnityPlugin {
 
-        readonly Harmony harmony = new("com.kirisoup.hff.fall");
+        private readonly Harmony harmony = new("com.kirisoup.hff.fall");
 
+        public static void Print() => print("");
         public static void Print(string msg) => print(msg);
         public static void Print(object msg) => print(msg.ToString());
 
         public void Awake() {
             harmony.PatchAll(typeof(Plugin));
-            Fall.PrepareLevel();
+            PluginConfig.Init(Config);
+            if (PluginConfig.EnableFall) Fall.PrepareLevel();
         }
 
         [HarmonyPatch(typeof(Game), "OnSceneLoaded"), HarmonyPostfix]
-        static void OnSceneLoaded() {
-            Fall.PrepareLevel();
+        private static void OnSceneLoaded() {
+            if (PluginConfig.EnableFall) Fall.PrepareLevel();
+        }
+        
+        public static void OnToggle() {
+            if (PluginConfig.EnableFall) {
+                Fall.PrepareLevel();
+            } else {
+                Fall.RestoreLevel();
+            }
         }
 
         public void OnDestroy() {
-            Fall.RestoreLevel();
+            if (PluginConfig.EnableFall) Fall.RestoreLevel();
+            PluginConfig.DestroyCmds();
             harmony.UnpatchSelf();
         }
     }
