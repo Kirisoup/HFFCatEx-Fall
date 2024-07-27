@@ -23,7 +23,7 @@ namespace fall {
         private static void OnSceneLoaded() {
             if (PluginConfig.EnableFall) Fall.PrepareLevel();
         }
-        
+
         public static void OnToggle() {
             if (PluginConfig.EnableFall) {
                 Fall.PrepareLevel();

@@ -11,6 +11,6 @@ public static class Extensions {
 
     public static IEnumerable<T> AnyOr<T>(this IEnumerable<T> self, IEnumerable<T> other) =>
         (self ?? throw new ArgumentNullException(nameof(self)))
-            .Any() ? self 
+            .Any() ? self
                 : (other ?? throw new ArgumentNullException(nameof(other)));
 }

@@ -5,7 +5,7 @@ using HarmonyLib;
 
 public static class ShellCommand {
 
-    private static Lazy<CommandRegistry> CmdReg => new(() => 
+    private static Lazy<CommandRegistry> CmdReg => new(() =>
         (CommandRegistry)AccessTools
             .Field(typeof(Shell), "commands")
             .GetValue(null)
@@ -15,7 +15,7 @@ public static class ShellCommand {
         (Dictionary<string, Action>)AccessTools
             .Field(typeof(CommandRegistry), "commands")
             .GetValue(CmdReg.Value)
-    );    
+    );
 
     public static Lazy<Dictionary<string, Action<string>>> CommandsStr => new(() =>
         (Dictionary<string, Action<string>>)AccessTools
@@ -23,7 +23,7 @@ public static class ShellCommand {
             .GetValue(CmdReg.Value)
     );
 
-    public static Lazy<string> HelpColor => new(() => 
+    public static Lazy<string> HelpColor => new(() =>
         (string)AccessTools
             .Field(typeof(CommandRegistry), "helpColor")
             .GetValue(CmdReg.Value)
